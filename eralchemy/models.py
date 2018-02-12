@@ -82,6 +82,7 @@ class Relation(Drawable):
         '1': '1',
         '': None
     }
+    style='crow'
 
     @staticmethod
     def make_from_match(match):
@@ -114,17 +115,41 @@ class Relation(Drawable):
             return ''
         return 'label=<<FONT>{}</FONT>>'.format(self.cardinalities[card])
 
+    def graphviz_crow_arrowheads(self, card):
+        if card=='*':
+            head='="crowodot"'
+        elif card=='?':
+            head='="teeodot"'
+        elif card=='+':
+            head='="crowtee"'
+        elif card=='1':
+            head='="teetee"'
+        return head
+        
     def to_dot(self):
         if self.right_cardinality == self.left_cardinality == '':
             return ''
         cards = []
+        edge = '--'
+        if self.style=='crow':
+            edge = '->'
+            if self.right_cardinality and self.left_cardinality:
+                cards.append('dir="both"')
         if self.left_cardinality != '':
-            cards.append('tail' +
-                         self.graphviz_cardinalities(self.left_cardinality))
+            if self.style=='crow':
+                cards.append('arrowhead' + 
+                             self.graphviz_crow_arrowheads(self.left_cardinality) )
+            else:
+                cards.append('tail' +
+                             self.graphviz_cardinalities(self.left_cardinality))
         if self.right_cardinality != '':
-            cards.append('head' +
-                         self.graphviz_cardinalities(self.right_cardinality))
-        return '"{}" -- "{}" [{}];'.format(self.left_col, self.right_col, ','.join(cards))
+            if self.style=='crow':
+                cards.append('arrowtail' +
+                             self.graphviz_crow_arrowheads(self.right_cardinality) )
+            else:
+                cards.append('head' +
+                             self.graphviz_cardinalities(self.right_cardinality))
+        return '"{}" {} "{}" [{}];'.format(self.left_col, edge, self.right_col, ','.join(cards))
 
     def __eq__(self, other):
         if Drawable.__eq__(self, other):

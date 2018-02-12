@@ -24,6 +24,7 @@ def cli():
     parser.add_argument('-s', nargs='?', help='Name of the schema.')
     parser.add_argument('-x', nargs='*', help='Name of the table(s) to exclude.')
     parser.add_argument('-v', help='Prints version number.', action='store_true')
+    #parser.add_argument('-g', help='Select the ERD graph style.')
 
     args = parser.parse_args()
     check_args(args)
