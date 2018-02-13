@@ -65,7 +65,7 @@ setup(
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
         'SQLAlchemy',
-        'pygraphviz'
+        'graphviz'
     ],
     entry_points={
         'console_scripts': [

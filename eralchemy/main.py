@@ -2,7 +2,8 @@
 from eralchemy.version import version as __version__
 from eralchemy.cst import GRAPH_BEGINNING
 from eralchemy.sqla import metadata_to_intermediary, declarative_to_intermediary, database_to_intermediary
-from pygraphviz.agraph import AGraph
+#from pygraphviz.agraph import AGraph
+from graphviz import Source
 from sqlalchemy.engine.url import make_url
 from sqlalchemy.exc import ArgumentError
 from eralchemy.helpers import check_args
@@ -51,10 +52,12 @@ def intermediary_to_dot(tables, relationships, output):
 def intermediary_to_schema(tables, relationships, output):
     """ Transforms and save the intermediary representation to the file chosen. """
     dot_file = _intermediary_to_dot(tables, relationships)
-    graph = AGraph()
-    graph = graph.from_string(dot_file)
+    #graph = AGraph()
+    #graph = graph.from_string(dot_file)
     extension = output.split('.')[-1]
-    graph.draw(path=output, prog='dot', format=extension)
+    #graph.draw(path=output, prog='dot', format=extension)
+    #Source.from_file(filename, engine='dot', format=extension)
+    return Source(dot_file, engine='dot', format=extension)
 
 
 def _intermediary_to_markdown(tables, relationships):
@@ -192,19 +195,20 @@ def render_er(input, output, mode='auto', include=None, exclude=None, schema=Non
     :param exclude: lst of str, table names to exclude, None means exclude nothing
     :param schema: name of the schema
     """
-    try:
-        tables, relationships = all_to_intermediary(input, schema=schema)
-        if include is not None:
-            tables, relationships = filter_includes(tables, relationships, include)
-        if exclude is not None:
-            tables, relationships = filter_excludes(tables, relationships, exclude)
-        intermediary_to_output = get_output_mode(output, mode)
-        intermediary_to_output(tables, relationships, output)
-    except ImportError as e:
-        module_name = e.message.split()[-1]
-        print('Please install {0} using "pip install {0}".'.format(module_name))
-    except ParsingException as e:
-        sys.stderr.write(e.message)
+    #try:
+    tables, relationships = all_to_intermediary(input, schema=schema)
+    if include is not None:
+        tables, relationships = filter_includes(tables, relationships, include)
+    if exclude is not None:
+        tables, relationships = filter_excludes(tables, relationships, exclude)
+    intermediary_to_output = get_output_mode(output, mode)
+    out = intermediary_to_output(tables, relationships, output)
+    return out
+    #except ImportError as e:
+    #    module_name = e.message.split()[-1]
+    #    print('Please install {0} using "pip install {0}".'.format(module_name))
+    #except ParsingException as e:
+    #    sys.stderr.write(e.message)
 
 
 if __name__ == '__main__':
