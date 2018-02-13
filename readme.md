@@ -24,6 +24,8 @@ To install ERAlchemy, just do:
 
 `ERAlchemy` requires [GraphViz](http://www.graphviz.org/Download.php) to generate the graphs and Python. Both are available for Windows, Mac and Linux.
 
+For Ubuntu: `!apt-get update && apt-get install -y graphviz libgraphviz-dev graphviz-dev`
+
 ### Use from the command line and a database
 
     $ eralchemy -i sqlite:///relative/path/to/db.db -o erd_from_sqlite.pdf
