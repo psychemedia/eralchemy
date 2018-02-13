@@ -65,8 +65,10 @@ class Column(Drawable):
     def to_dot(self):
         base = ROW_TAGS.format(' ALIGN="LEFT"', '{key_opening}{col_name}{key_closing}{type}')
         return base.format(
-            key_opening='<u>' if self.is_key else '',
-            key_closing='</u>' if self.is_key else '',
+            #key_opening='<u>' if self.is_key else '',
+            #key_closing='</u>' if self.is_key else '',
+            key_opening='*' if self.is_key else '',
+            key_closing='',
             col_name=FONT_TAGS.format(self.name),
             type=FONT_TAGS.format(' [{}]').format(self.type) if self.type is not None else ''
         )
