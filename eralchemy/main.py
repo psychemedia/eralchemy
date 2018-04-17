@@ -238,7 +238,10 @@ def render_er(input, output, mode='auto', include_tables=None, include_columns=N
                                                  include_tables=include_tables, include_columns=include_columns,
                                                  exclude_tables=exclude_tables, exclude_columns=exclude_columns)
         intermediary_to_output = get_output_mode(output, mode)
-        intermediary_to_output(tables, relationships, output)
+        gvo = intermediary_to_output(tables, relationships, output)
+        #return graphviz object which has a _repr_svg_()-method
+        #http://graphviz.readthedocs.io/en/stable/manual.html#jupyter-notebooks
+        return gvo
     except ImportError as e:
         module_name = e.message.split()[-1]
         print('Please install {0} using "pip install {0}".'.format(module_name))
