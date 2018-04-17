@@ -12,7 +12,7 @@ import argparse
 
 def set_filename_version(filename, version_number):
     with open(filename, 'w+') as f:
-        f.write("version = '{}'".format(version_number))
+        f.write("version = '{}'\n".format(version_number))
 
 
 def set_init_version(version_str):
@@ -30,7 +30,7 @@ def build_and_upload():
     rm('build')
     rm('dist')
     Popen(['pandoc', '--from=markdown', '--to=rst', 'readme.md', '--output=readme.rst'],
-           stdout=PIPE).wait()
+          stdout=PIPE).wait()
     Popen([sys.executable, 'setup.py', 'bdist_wheel', '--universal'], stdout=PIPE).wait()
     Popen([sys.executable, 'setup.py', 'sdist'], stdout=PIPE).wait()
     pypi_pwd = getpass(prompt='Pypi Password: ')
@@ -88,8 +88,10 @@ def parse_args():
 
 def get_current_version():
     with open('eralchemy/version.py') as f:
-        exec (f.readlines()[0])
-        return version_str_to_lst(version)
+        lines = f.readlines()
+        namespace = {}
+        exec(lines[0], namespace)
+        return version_str_to_lst(namespace['version'])
 
 
 def get_git_tags():
