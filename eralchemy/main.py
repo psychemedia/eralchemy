@@ -1,17 +1,11 @@
 # -*- coding: utf-8 -*-
-<<<<<<< HEAD
-from eralchemy.version import version as __version__
-from eralchemy.cst import GRAPH_BEGINNING
-from eralchemy.sqla import metadata_to_intermediary, declarative_to_intermediary, database_to_intermediary
-#from pygraphviz.agraph import AGraph
-from graphviz import Source
-=======
 import argparse
 import sys
 import copy
 
-from pygraphviz.agraph import AGraph
->>>>>>> Alexis-benoist/master
+#from pygraphviz.agraph import AGraph
+from graphviz import Source
+
 from sqlalchemy.engine.url import make_url
 from sqlalchemy.exc import ArgumentError
 
@@ -29,17 +23,7 @@ except NameError:
 
 def cli():
     """Entry point for the application script"""
-<<<<<<< HEAD
-    parser = argparse.ArgumentParser(prog='ERAlchemy')
-    parser.add_argument('-i', nargs='?', help='Database URI to process.')
-    parser.add_argument('-o', nargs='?', help='Name of the file to write.')
-    parser.add_argument('-s', nargs='?', help='Name of the schema.')
-    parser.add_argument('-x', nargs='*', help='Name of the table(s) to exclude.')
-    parser.add_argument('-v', help='Prints version number.', action='store_true')
-    #parser.add_argument('-g', help='Select the ERD graph style.')
-=======
     parser = get_argparser()
->>>>>>> Alexis-benoist/master
 
     args = parser.parse_args()
     check_args(args)
